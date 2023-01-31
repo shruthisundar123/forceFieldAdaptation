@@ -1,0 +1,7 @@
+#!/bin/bash
+# run through the 4 conditions
+
+python3 train_NF1.py
+python3 train_CF1.py
+python3 train_NF2.py
+python3 train_CF2.py
