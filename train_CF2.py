@@ -25,8 +25,8 @@ nn.load_weights(weight_file) #.expect_partial()
 condition = "adapt" # to re-learn centre-out reaches in a given FF/NF
 
 n_t = 100
-n_batches = 256
-batch_size = 64 #change to 1 when actually adapting to represent human learning more
+n_batches = 1 #256
+batch_size = 1 #64 #change to 1 when actually adapting to represent human learning more
 # this callback logs training information for each batch passed, rather than for each epoch.
 callbacks = [mn.nets.callbacks.BatchLogger()]
 for i in range(10):

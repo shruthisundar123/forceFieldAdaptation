@@ -28,13 +28,21 @@ batch_size = 64
 callbacks = [mn.nets.callbacks.BatchLogger()]
 for i in range(30):
     print(i + 1)
+    nn.task.angular_step = 15 # reset to original amount
     
     # generate inputs and initial states based on the task
-    [inputs, targets, init_states] = nn.task.generate(n_timesteps=n_t, batch_size=batch_size*n_batches, condition=condition, ff_coefficient=0) #coefficient = 0 for null field
-    
+    [inputs, targets, init_states] = nn.task.generate(n_timesteps=n_t, batch_size=batch_size*n_batches, condition=condition, ff_coefficient=0) #coefficient = 0 for null field   
     # fit the model
     # verbose = 1 will print the training losses
     h = nn.fit(x=[inputs, init_states], y=targets, verbose=1, epochs=1, batch_size=batch_size, shuffle=False, callbacks=callbacks)
+
+    #get results
+    n_mov_circle = 8 # number of movement directions around the unit circle
+    n_t = 100
+    nn.task.angular_step = 360 / n_mov_circle
+
+    [inputs, targets, init_states] = nn.task.generate(n_timesteps=n_t, batch_size=n_mov_circle, condition=condition)
+    results = nn([inputs, init_states], training=False)
 
 ######################################
 # SAVE MODEL PARAMETERS

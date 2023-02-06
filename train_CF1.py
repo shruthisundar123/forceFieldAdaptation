@@ -25,11 +25,11 @@ nn.load_weights(weight_file) #.expect_partial()
 condition = "adapt" # to re-learn centre-out reaches in a given FF/NF
 
 n_t = 100
-n_batches = 256
-batch_size = 64 #change to 1 when actually adapting to represent human learning more
+n_batches = 1 #256
+batch_size = 1 #64 #change to 1 when actually adapting to represent human learning more
 # this callback logs training information for each batch passed, rather than for each epoch.
 callbacks = [mn.nets.callbacks.BatchLogger()]
-for i in range(10):
+for i in range(2000):
     #generate the inputs and initial states for the curl field
     # ff_coefficient=8 makes it the curl field
     print(i + 1)
