@@ -1,6 +1,7 @@
 import os
 import json
 import motornet as mn
+import numpy as np
 
 from create_network import create_network
 
@@ -19,15 +20,20 @@ nn = create_network()
 ####################################
 # TRAIN NETWORK IN A NULL FIELD
 
-condition = "train"
-
 n_t = 100
 n_batches = 256
 batch_size = 64
+
+#to store results after each fit
+myLargeArr = np.empty((0, 100, 4), float)
+myTargetArr = np.empty((0, 100, 4), float)
+
+
 # this callback logs training information for each batch passed, rather than for each epoch.
 callbacks = [mn.nets.callbacks.BatchLogger()]
 for i in range(30):
     print(i + 1)
+    condition = "train"
     nn.task.angular_step = 15 # reset to original amount
     
     # generate inputs and initial states based on the task
@@ -36,13 +42,19 @@ for i in range(30):
     # verbose = 1 will print the training losses
     h = nn.fit(x=[inputs, init_states], y=targets, verbose=1, epochs=1, batch_size=batch_size, shuffle=False, callbacks=callbacks)
 
+    ## collect results to assess learning curve
     #get results
+    condition = "test"
     n_mov_circle = 8 # number of movement directions around the unit circle
     n_t = 100
     nn.task.angular_step = 360 / n_mov_circle
 
     [inputs, targets, init_states] = nn.task.generate(n_timesteps=n_t, batch_size=n_mov_circle, condition=condition)
     results = nn([inputs, init_states], training=False)
+
+    #store results 
+    myLargeArr = np.append(myLargeArr, results['cartesian position'], axis=0)
+    myTargetArr = np.append(myTargetArr, targets, axis=0)
 
 ######################################
 # SAVE MODEL PARAMETERS
@@ -60,6 +72,11 @@ log_file = folderLocation + "log.json"
 
 # save model weights
 nn.save_weights(weight_file, save_format='h5')
+
+cartesian_results_filename = folderLocation + "cartesian_position.npy"
+targets_filename = folderLocation + "targets.npy"
+np.save(cartesian_results_filename, myLargeArr)
+np.save(targets_filename, myTargetArr)
 
 # save model configuration ### NOT NEEDED
 # if not os.path.isfile(cfg_file + ".json"):

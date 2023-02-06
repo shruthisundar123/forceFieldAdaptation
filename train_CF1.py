@@ -1,6 +1,7 @@
 import os
 import json
 import motornet as mn
+import numpy as np
 
 from create_network import create_network
 
@@ -27,14 +28,32 @@ condition = "adapt" # to re-learn centre-out reaches in a given FF/NF
 n_t = 100
 n_batches = 1 #256
 batch_size = 1 #64 #change to 1 when actually adapting to represent human learning more
+
+#to store results after each fit
+myLargeArr = np.empty((0, 100, 4), float)
+
 # this callback logs training information for each batch passed, rather than for each epoch.
 callbacks = [mn.nets.callbacks.BatchLogger()]
 for i in range(2000):
     #generate the inputs and initial states for the curl field
     # ff_coefficient=8 makes it the curl field
     print(i + 1)
+    nn.task.angular_step = 15 # reset to original amount
     [inputs, targets, init_states] = nn.task.generate(n_timesteps=n_t, batch_size=batch_size*n_batches, condition=condition, ff_coefficient=8) #coefficient = 8 for curl field
     h = nn.fit(x=[inputs, init_states], y=targets, verbose=1, epochs=1, batch_size=batch_size, shuffle=False, callbacks=callbacks)
+
+    ## collect results to assess learning curve
+    #get results
+    n_mov_circle = 8 # number of movement directions around the unit circle
+    n_t = 100
+    nn.task.angular_step = 360 / n_mov_circle
+
+    [inputs, targets, init_states] = nn.task.generate(n_timesteps=n_t, batch_size=n_mov_circle, condition=condition)
+    results = nn([inputs, init_states], training=False)
+
+    #store results 
+    tempArr = np.array(results['cartesian position'])
+    myLargeArr = np.append(myLargeArr, tempArr, axis=0)
 
 ######################################
 # SAVE MODEL PARAMETERS
@@ -50,6 +69,9 @@ log_file = folderLocation + "log.json"
 
 # save model weights
 nn.save_weights(weight_file, save_format='h5')
+
+cartesian_results_filename = folderLocation + "cartesian_position.npy"
+np.save(cartesian_results_filename, myLargeArr)
 
 # save training history (log)
 with open(log_file, 'w') as file:
