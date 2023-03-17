@@ -36,7 +36,7 @@ def train_NF1(trialNumber):
 
     # this callback logs training information for each batch passed, rather than for each epoch.
     callbacks = [mn.nets.callbacks.BatchLogger()]
-    for i in range(30):
+    for i in range(50):
         print(i + 1)
 
         ## TRAINING
