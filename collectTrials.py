@@ -4,6 +4,8 @@ from train_CF1 import train_CF1
 from train_NF2 import train_NF2
 from train_CF2 import train_CF2
 
+# python3 collectTrials.py > training_progress.txt & disown -h
+
 print("opened collectTrials file")
 print()
 
