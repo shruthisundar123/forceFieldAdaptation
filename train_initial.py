@@ -13,7 +13,7 @@ from plotting_functions import print_training_log
 from test_network import null_test
 from test_network import curl_test
 
-def train_initial(trialNumber):
+def train_initial(trialNumber, folderLocation):
 
     ######################################
     print()
@@ -70,7 +70,7 @@ def train_initial(trialNumber):
 
     print("Completed training and collected results")
 
-    folderLocation = "save_initial" + os.path.sep
+    #folderLocation = "save_initial" + os.path.sep
 
     # save the trained model
     weight_file = folderLocation + "weights_" + trialNumber + ".h5"

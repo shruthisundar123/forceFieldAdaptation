@@ -9,7 +9,7 @@ from plotting_functions import print_training_log
 from test_network import null_test
 from test_network import curl_test
 
-def train_NF1(trialNumber):
+def train_NF1(trialNumber, folderLocation):
     ######################################
     print()
     print("RUNNING TRAIN NF1")
@@ -19,7 +19,7 @@ def train_NF1(trialNumber):
     nn = create_network()
 
     # Load the weights obtained from the training in null field 1
-    weight_file = "save_initial" + os.path.sep + "weights_" + trialNumber + ".h5"
+    weight_file = "500unitsTrial/save_initial" + os.path.sep + "weights_" + trialNumber + ".h5"
     nn.load_weights(weight_file) #.expect_partial()
 
     ####################################
@@ -67,7 +67,7 @@ def train_NF1(trialNumber):
     ######################################
     ## SAVE MODEL PARAMETERS
 
-    folderLocation = "save_NF1" + os.path.sep
+    #folderLocation = "save_NF1" + os.path.sep
 
     # save the trained model
     weight_file = folderLocation + "weights_" + trialNumber + ".h5"

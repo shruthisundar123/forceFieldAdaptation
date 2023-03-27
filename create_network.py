@@ -20,7 +20,7 @@ def create_network():
     # SET UP PLANT
     plant = mn.plants.RigidTendonArm26(muscle_type=RigidTendonHillMuscleThelen(), visual_delay=0.05, proprioceptive_delay=0.02)
     # SET UP NETWORK
-    n_units = 50
+    n_units = 250
     # original: kernal regularizer = 1e-7, recurrent regularizer = 1e-5
     network = mn.nets.layers.GRUNetwork(plant=plant, n_units=n_units, kernel_regularizer=1e-9, name='network', recurrent_regularizer=1e-9)
     # SET UP TASK
