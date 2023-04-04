@@ -19,7 +19,7 @@ def train_NF1(trialNumber, folderLocation):
     nn = create_network()
 
     # Load the weights obtained from the training in null field 1
-    weight_file = "500unitsTrial/save_initial" + os.path.sep + "weights_" + trialNumber + ".h5"
+    weight_file = "new500UnitNetwork/save_initial" + os.path.sep + "weights_" + trialNumber + ".h5"
     nn.load_weights(weight_file) #.expect_partial()
 
     ####################################
@@ -27,7 +27,7 @@ def train_NF1(trialNumber, folderLocation):
 
     n_t = 100
     n_batches = 1 #256
-    batch_size = 64
+    batch_size = 32
 
     #to store test targets and results after each fit
     # 100 data points in a single reach; each data point has 4 parameters (x, y, shoulder velocity, elbow velocity)
@@ -36,8 +36,8 @@ def train_NF1(trialNumber, folderLocation):
 
     # this callback logs training information for each batch passed, rather than for each epoch.
     callbacks = [mn.nets.callbacks.BatchLogger()]
-    for i in range(50):
-        print(i + 1)
+    for i in range(100):
+        #print(i + 1)
 
         ## TRAINING
         condition = "adapt"

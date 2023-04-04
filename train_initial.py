@@ -38,7 +38,7 @@ def train_initial(trialNumber, folderLocation):
     # this callback logs training information for each batch passed, rather than for each epoch.
     callbacks = [mn.nets.callbacks.BatchLogger()]
     for i in range(50):
-        print(i + 1)
+        #print(i + 1)
 
         ## TRAINING
         condition = "train"

@@ -20,7 +20,7 @@ def train_CF2(trialNumber, folderLocation):
     nn = create_network()
 
     # Load the weights obtained from the training in null field 2 (washout)
-    weight_file = "500unitsTrial/save_NF2" + os.path.sep + "weights_" + trialNumber + ".h5"
+    weight_file = "new500UnitNetwork/save_NF2" + os.path.sep + "weights_" + trialNumber + ".h5"
     nn.load_weights(weight_file) #.expect_partial()
 
     ########################################
@@ -30,7 +30,7 @@ def train_CF2(trialNumber, folderLocation):
 
     n_t = 100
     n_batches = 1 #256
-    batch_size = 64 #1 #64 #change to 1 when actually adapting to represent human learning more
+    batch_size = 32 #1 #64 #change to 1 when actually adapting to represent human learning more
 
     #to store test targets and results after each fit
     myResultsArr = np.empty((0, 100, 4), float) 
@@ -38,8 +38,8 @@ def train_CF2(trialNumber, folderLocation):
 
     # this callback logs training information for each batch passed, rather than for each epoch.
     callbacks = [mn.nets.callbacks.BatchLogger()]
-    for i in range(50):
-        print(i + 1)
+    for i in range(100):
+        #print(i + 1)
         
         ## TRAINING
         condition = "adapt" # to re-learn centre-out reaches in a given FF/NF   
